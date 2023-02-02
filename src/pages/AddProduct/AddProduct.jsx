@@ -4,7 +4,7 @@ import {Link, useNavigate } from "react-router-dom";
 import {useEffect, useState} from "react";
 
 function AddProduct(props) {
-    let itemsFromStorage = (JSON.parse(window.localStorage.getItem('list')));
+    let itemsFromStorage = window.localStorage.getItem('list') ? (JSON.parse(window.localStorage.getItem('list'))) : [];
     console.log(itemsFromStorage)
     const [name, setName] = useState('')
     const [SKU, setSKU] = useState('')
