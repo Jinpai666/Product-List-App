@@ -6,7 +6,6 @@ import {
     createBrowserRouter,
     createRoutesFromElements,
     Route,
-    Link,
     Outlet,
     RouterProvider
 } from 'react-router-dom'
@@ -32,14 +31,9 @@ function App() {
 
 const Root = () => {
     return <>
-        <div>
-            <Link to="/">Product list</Link>
-            <Link to="/add-product">Add products</Link>
-        </div>
 
-        <div>
             <Outlet/>
-        </div>
+
     </>
 }
 
