@@ -12,29 +12,6 @@ function ProductList(props) {
         console.log('zmieniam')
     },[]);
 
-    // const addToLocalStorage = () => window.localStorage.setItem('list', JSON.stringify([
-    //     {
-    //         type: 'furniture',
-    //         name: 'chair',
-    //         SKU: 'f3612241ad',
-    //         price: '25$',
-    //         dimension: '24x45x15'
-    //     },
-    //     {
-    //         type: 'DVD',
-    //         name: 'The Wire',
-    //         SKU: 'z3618541sf',
-    //         price: '25$',
-    //         size: '700MB'
-    //     },
-    //     {
-    //         type: 'book',
-    //         name: 'The Lord of the Rings',
-    //         SKU: 'z3618541sf',
-    //         price: '25$',
-    //         weight: '2KG'
-    //     }
-    // ]));
     return (
         <>
             <div>
