@@ -1,58 +1,45 @@
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './AddProduct.scss'
 import {Link, useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
-import {getData, getFormData} from "../../utils/api.js";
-import axios from "axios";
+import {getData, sendData} from "../../utils/api.js";
 
 
-function AddProduct(props) {
-    let itemsFromStorage = window.localStorage.getItem('list') ? (JSON.parse(window.localStorage.getItem('list'))) : [];
-    const [type,setType] = useState('furniture')
-    const [formData, setFormData] = useState({})
+function AddProduct() {
 
-// fetch('https://api.jsonbin.io/v3/b/63de5f3bebd26539d075f29e').then(response => setFormData(response))
+    const [type, setType] = useState('furniture');
+    const [formData, setFormData] = useState({});
 
-    const sendFormData = () => {
-        let req = new XMLHttpRequest();
+    const skuRef = useRef('');
+    const nameRef = useRef('');
+    const priceRef = useRef('');
+    const typeRef = useRef('');
+    const uniqueRef = useRef('');
 
-        req.onreadystatechange = () => {
-            if (req.readyState == XMLHttpRequest.DONE) {
-                console.log(req.responseText);
-            }
-        };
-
-        req.open("PUT", "https://api.jsonbin.io/v3/b/63de5f3bebd26539d075f29e", true);
-        req.setRequestHeader("Content-Type", "application/json");
-        req.setRequestHeader("X-Master-Key", "$2b$10$3lRbwOeHk95tiwAdCDDHq.uhtryglyvS/LD1S8BfLPgWWn.AqldMa");
-        req.send('{"sample": "Hello World"}');
-    }
-
-
-useEffect(()=>{
-   setFormData(getData())
-},[])
     const navigate = useNavigate();
 
-    const collectData = e => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-        e.target.name === 'type' ? setType(e.target.value) : null;
-    }
+    useEffect(() => {
+        getData(setFormData);
+    }, [])
 
+
+    const handleTypeChange = (e) => {
+        setType(e.target.value);
+    }
     const handleSave = (e) => {
         e.preventDefault()
-        const newItem =  [...itemsFromStorage, formData];
-        //could be api request to database
-        window.localStorage.setItem('list', JSON.stringify(newItem))
+        const newList = [...formData, {
+            SKU: skuRef.current.value,
+            name: nameRef.current.value,
+            price: priceRef.current.value,
+            unique: uniqueRef.current.value,
+            type: typeRef.current.value,
+        }];
+        sendData(newList)
         navigate("/")
     }
 
     return (
         <>
-            <button onClick={()=>console.log(formData)}>test</button>
             <form>
                 <Link to="/">Cancel</Link>
                 <button onClick={handleSave}>save</button>
@@ -62,8 +49,8 @@ useEffect(()=>{
                     <input
                         name={'SKU'}
                         type="text"
-                        onChange={collectData}
                         maxLength={8}
+                        ref={skuRef}
                     />
                 </label>
 
@@ -72,7 +59,7 @@ useEffect(()=>{
                     <input
                         name={'name'}
                         type="text"
-                        onChange={collectData}
+                        ref={nameRef}
                     />
                 </label>
 
@@ -81,42 +68,46 @@ useEffect(()=>{
                     <input
                         name={'price'}
                         type="text"
-                        onChange={collectData}
+                        ref={priceRef}
                     />
                 </label>
 
-                { type === 'furniture' && <label>
+                {type === 'furniture' && <label>
                     Dimensions
                     <input
                         name='dimensions'
                         type="text"
-                        onChange={collectData}
+                        ref={uniqueRef}
                     />
-                </label> }
+                </label>}
 
-                { type === 'book' && <label>
+                {type === 'book' && <label>
                     Weight
                     <input
                         name='weight'
                         type="text"
-                        onChange={collectData}
-                    />
-                </label> }
+                        ref={uniqueRef}
 
-                { type === 'dvd' && <label>
+                    />
+                </label>}
+
+                {type === 'dvd' && <label>
                     Size
                     <input
                         name='size'
                         type="text"
-                        onChange={collectData}
+                        ref={uniqueRef}
+
                     />
-                </label> }
+                </label>}
 
                 <label>
                     Type Switcher
                     <select
                         name={'type'}
-                        onChange={collectData}>
+                        ref={typeRef}
+                        onChange={handleTypeChange}
+                    >
                         <option value="furniture">Furniture</option>
                         <option value="dvd">DVD</option>
                         <option value="book">Book</option>
@@ -128,4 +119,4 @@ useEffect(()=>{
     );
 }
 
-export default AddProduct; 
+export default AddProduct;

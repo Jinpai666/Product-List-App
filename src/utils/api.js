@@ -1,23 +1,31 @@
 import axios from "axios";
-import {useState} from "react";
+export async function getData(setItems) {
 
-export const getFormData = () => {
-    // let data;
-    // let request = new XMLHttpRequest();
-    // request.open('GET', 'https://api.jsonbin.io/v3/b/63de5f3bebd26539d075f29e' )
-    // request.responseType = 'json';
-    // request.onload = () => {
-    //
-    //    data = request.response.record.sample
-    //
-    // }
-    // request.send()
-    // return data;
-    fetch('https://api.jsonbin.io/v3/b/63de5f3bebd26539d075f29e').then(response => console.log(response))
-
+    try {
+        await axios.get(
+            'https://api.jsonbin.io/v3/b/63de5f3bebd26539d075f29ex'
+        ).then(response => setItems(response))
+    } catch (error) {
+        setItems([])
+        console.log(error)
+    }
 }
-export const getData = () => {
-    const [data, setData] = useState([])
-    axios.get('https://api.jsonbin.io/v3/b/63de5f3bebd26539d075f29e').then((response) => setData(response));
-    return data
+
+export async function sendData(list) {
+    try {
+        await axios.put(
+            'https://api.jsonbin.io/v3/b/63de5f3bebd26539d075f29e',
+            {
+                list
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Master-Key": "$2b$10$3lRbwOeHk95tiwAdCDDHq.uhtryglyvS/LD1S8BfLPgWWn.AqldMa"
+                }
+            }
+        )
+    } catch (error) {
+        console.log(error)
+    }
 }
