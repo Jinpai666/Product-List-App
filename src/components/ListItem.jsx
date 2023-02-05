@@ -1,10 +1,13 @@
 import React from 'react';
 
 const ListItem = ({item}) => {
-    console.log('item',item)
     return (
         <div>
-            {item}
+                <div>{item.SKU}</div>
+                <div>{item.name}</div>
+                <div>{item.price}</div>
+                <div>{item.type}</div>
+                <div>{item.unique}</div>
         </div>
     );
 };

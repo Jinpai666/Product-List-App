@@ -4,7 +4,7 @@ export async function getData(setItems) {
     try {
         await axios.get(
             'https://api.jsonbin.io/v3/b/63de5f3bebd26539d075f29e'
-        ).then(response => setItems(response))
+        ).then(response => setItems(response.data.record.list))
     } catch (error) {
         setItems([])
         console.log(error)

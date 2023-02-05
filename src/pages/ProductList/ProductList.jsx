@@ -2,15 +2,17 @@ import React, {useEffect, useState} from 'react';
 import './ProductList.scss'
 import {Link} from "react-router-dom";
 import ListItem from "../../components/ListItem.jsx";
+import {getData} from "../../utils/api.js";
 
 
 function ProductList(props) {
-     const [listItems, setListItems] = useState([]) ;
+    const [listItems, setListItems] = useState([]) ;
+    const [formData, setFormData] = useState({});
 
-    useEffect(()=>{
-        window.localStorage.getItem('list') && setListItems (JSON.parse(window.localStorage.getItem('list')));
-        console.log('zmieniam')
-    },[]);
+
+    useEffect(() => {
+        getData(setFormData);
+    }, [])
 
     return (
         <>
@@ -18,11 +20,11 @@ function ProductList(props) {
                 <h1>Product List</h1>
                 <div>
                     <Link to="/add-product">ADD</Link>
-                    <button id="delete-product-btn">MASS DELETE</button>
+                    <button onClick={()=>console.log('yeet')} id="delete-product-btn">MASS DELETE</button>
                 </div>
                 <div>
-                    { listItems?.map((item, idx)=>
-                        <ListItem key={idx} item={item.name}/>
+                    { formData?.map((item, idx)=>
+                        <ListItem key={idx} item={item}/>
                     )}
                 </div>
             </div>

@@ -40,6 +40,7 @@ function AddProduct() {
 
     return (
         <>
+            <button onClick={()=>console.log(formData)}>test</button>
             <form>
                 <Link to="/">Cancel</Link>
                 <button onClick={handleSave}>save</button>
@@ -87,7 +88,6 @@ function AddProduct() {
                         name='weight'
                         type="text"
                         ref={uniqueRef}
-
                     />
                 </label>}
 
