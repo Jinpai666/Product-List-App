@@ -7,12 +7,12 @@ import {getData} from "../../utils/api.js";
 
 function ProductList(props) {
     const [listItems, setListItems] = useState([]) ;
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState([]);
 
 
     useEffect(() => {
         getData(setFormData);
-    }, [])
+    }, [formData])
 
     return (
         <>
@@ -20,7 +20,7 @@ function ProductList(props) {
                 <h1>Product List</h1>
                 <div>
                     <Link to="/add-product">ADD</Link>
-                    <button onClick={()=>console.log('yeet')} id="delete-product-btn">MASS DELETE</button>
+                    <button onClick={()=>console.log(formData)} id="delete-product-btn">MASS DELETE</button>
                 </div>
                 <div>
                     { formData?.map((item, idx)=>

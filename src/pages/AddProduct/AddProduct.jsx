@@ -1,19 +1,24 @@
-import React, {useEffect, useRef, useState} from 'react';
-import './AddProduct.scss'
+import React, {useEffect, useRef, useState} from "react";
+import "./AddProduct.scss"
 import {Link, useNavigate} from "react-router-dom";
 import {getData, sendData} from "../../utils/api.js";
 
 
 function AddProduct() {
 
-    const [type, setType] = useState('furniture');
+    const [type, setType] = useState("furniture");
     const [formData, setFormData] = useState({});
+    const [isFurniture, setIsFurniture] = useState(true);
 
-    const skuRef = useRef('');
-    const nameRef = useRef('');
-    const priceRef = useRef('');
-    const typeRef = useRef('');
-    const uniqueRef = useRef('');
+    const skuRef = useRef("");
+    const nameRef = useRef("");
+    const priceRef = useRef("");
+    const typeRef = useRef("");
+    const uniqueRef = useRef("");
+    const heightRef = useRef("");
+    const widthRef = useRef("");
+    const lengthRef = useRef("");
+
 
     const navigate = useNavigate();
 
@@ -23,32 +28,47 @@ function AddProduct() {
 
 
     const handleTypeChange = (e) => {
-        setType(e.target.value);
+        const target = e.target.value
+        setType(target);
+        target === 'furniture'
+            ? setIsFurniture(true)
+            : setIsFurniture(false)
     }
     const handleSave = (e) => {
+        let newItem;
         e.preventDefault()
-        const newList = [...formData, {
-            SKU: skuRef.current.value,
-            name: nameRef.current.value,
-            price: priceRef.current.value,
-            unique: uniqueRef.current.value,
-            type: typeRef.current.value,
-        }];
+        isFurniture
+            ? newItem =  {
+                SKU: skuRef.current.value,
+                name: nameRef.current.value,
+                price: priceRef.current.value,
+                unique: `${heightRef.current.value}x${widthRef.current.value}x${lengthRef.current.value}`,
+                type: typeRef.current.value,
+            }
+            : newItem =  {
+                SKU: skuRef.current.value,
+                name: nameRef.current.value,
+                price: priceRef.current.value,
+                unique: uniqueRef.current.value,
+                type: typeRef.current.value,
+            };
+        const newList = [...formData, newItem];
         sendData(newList)
         navigate("/")
     }
 
     return (
         <>
-            <button onClick={()=>console.log(formData)}>test</button>
-            <form>
+            <button onClick={() => console.log(formData)}>test</button>
+            <form id="#product_form">
                 <Link to="/">Cancel</Link>
                 <button onClick={handleSave}>save</button>
 
                 <label>
                     SKU
                     <input
-                        name={'SKU'}
+                        id="sku"
+                        name="SKU"
                         type="text"
                         maxLength={8}
                         ref={skuRef}
@@ -58,7 +78,8 @@ function AddProduct() {
                 <label>
                     Name
                     <input
-                        name={'name'}
+                        id="name"
+                        name="name"
                         type="text"
                         ref={nameRef}
                     />
@@ -67,34 +88,60 @@ function AddProduct() {
                 <label>
                     Price
                     <input
-                        name={'price'}
+                        id="price"
+                        name="price"
                         type="text"
                         ref={priceRef}
                     />
                 </label>
 
-                {type === 'furniture' && <label>
+                {type === "furniture" && <div>
                     Dimensions
-                    <input
-                        name='dimensions'
-                        type="text"
-                        ref={uniqueRef}
-                    />
-                </label>}
+                    <label>
+                        Height
+                        <input
+                            id="height"
+                            name="dimensions"
+                            type="text"
+                            ref={heightRef}
+                        />
+                    </label>
+                    <label>
+                        Width
+                        <input
+                            id="width"
+                            name="dimensions"
+                            type="text"
+                            ref={widthRef}
+                        />
+                    </label>
+                    <label>
+                        Length
+                        <input
+                            id="length"
+                            name="dimensions"
+                            type="text"
+                            ref={lengthRef}
+                        />
+                    </label>
 
-                {type === 'book' && <label>
+                </div>}
+
+                {type === "book" && <label>
                     Weight
                     <input
-                        name='weight'
+                        id="weight"
+                        name="weight"
                         type="text"
                         ref={uniqueRef}
                     />
                 </label>}
 
-                {type === 'dvd' && <label>
+                {type === "dvd" && <label>
                     Size
                     <input
-                        name='size'
+                        id="size"
+                        name="size"
                         type="text"
                         ref={uniqueRef}
 
@@ -104,7 +151,8 @@ function AddProduct() {
                 <label>
                     Type Switcher
                     <select
-                        name={'type'}
+                        id="productType"
+                        name="type"
                         ref={typeRef}
                         onChange={handleTypeChange}
                     >
