@@ -11,8 +11,9 @@ function ProductList(props) {
 
 
     useEffect(() => {
+        console.log('loading')
         getData(setFormData);
-    }, [formData])
+    }, [])
 
     return (
         <>

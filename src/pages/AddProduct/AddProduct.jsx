@@ -6,6 +6,7 @@ import {getData, sendData} from "../../utils/api.js";
 
 function AddProduct() {
 
+    const [isDataLoaded, setIsDataLoaded] = useState(false);
     const [type, setType] = useState("furniture");
     const [formData, setFormData] = useState({});
     const [isFurniture, setIsFurniture] = useState(true);
@@ -24,6 +25,7 @@ function AddProduct() {
 
     useEffect(() => {
         getData(setFormData);
+        setIsDataLoaded(true)
     }, [])
 
 
@@ -53,12 +55,13 @@ function AddProduct() {
                 type: typeRef.current.value,
             };
         const newList = [...formData, newItem];
-        sendData(newList)
+        sendData(newList);
         navigate("/")
     }
 
     return (
-        <>
+        isDataLoaded
+        ? <>
             <button onClick={() => console.log(formData)}>test</button>
             <form id="#product_form">
                 <Link to="/">Cancel</Link>
@@ -164,6 +167,7 @@ function AddProduct() {
 
             </form>
         </>
+            : <></>
     );
 }
 
