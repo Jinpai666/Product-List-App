@@ -41,28 +41,28 @@ function AddProduct() {
         e.preventDefault()
         isFurniture
             ? newItem =  {
-                SKU: skuRef.current.value,
+                sku: skuRef.current.value,
                 name: nameRef.current.value,
                 price: priceRef.current.value,
                 unique: `${heightRef.current.value}x${widthRef.current.value}x${lengthRef.current.value}`,
                 type: typeRef.current.value,
             }
             : newItem =  {
-                SKU: skuRef.current.value,
+                sku: skuRef.current.value,
                 name: nameRef.current.value,
                 price: priceRef.current.value,
                 unique: uniqueRef.current.value,
                 type: typeRef.current.value,
             };
-        const newList = [...formData, newItem];
+        // const newList =  newItem;
+        // const newList = [...formData, newItem];
         setPending(true)
-        sendData(newList).then(() =>  navigate("/"));
+        sendData(newItem).then(() =>  navigate("/"));
 
     }
 
     return (
         <>
-            <button onClick={() => console.log(formData)}>test</button>
             <form id="product_form">
                 <Link to="/">Cancel</Link>
                 <button onClick={handleSave}>{pending ? 'saving' : 'save'}</button>

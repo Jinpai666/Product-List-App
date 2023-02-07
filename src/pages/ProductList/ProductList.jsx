@@ -1,31 +1,44 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import './ProductList.scss'
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import ListItem from "../../components/ListItem.jsx";
-import {getData} from "../../utils/api.js";
+import { getData, updateData } from "../../utils/api.js";
 
 
-function ProductList(props) {
-    const [listItems, setListItems] = useState([]);
+function ProductList() {
+
     const [formData, setFormData] = useState([]);
+    const [selectedSkus, setSelectedSkus] = useState([])
 
     useEffect(() => {
-        console.log('loading')
         getData(setFormData);
-
-
     }, [])
+
+    const handleDelete = () => {
+        const newData = formData.filter(item => !selectedSkus.includes(item.sku))
+        updateData(newData).then((error) => {
+            error
+                ? null
+                : setFormData(newData)
+        })
+    }
+
     return (
         <>
             <div>
                 <h1>Product List</h1>
                 <div>
                     <Link to="/add-product">ADD</Link>
-                    <button onClick={() => console.log(formData)} id="delete-product-btn">MASS DELETE</button>
+                    <button onClick={handleDelete} id="delete-product-btn">MASS DELETE</button>
                 </div>
                 <div>
-                    {formData?.map((item, idx) =>
-                        <ListItem key={idx} item={item}/>
+                    {formData?.map((item) =>
+                        <ListItem
+                            key={item.sku}
+                            item={item}
+                            selectedSkus={selectedSkus}
+                            setSelectedSkus={setSelectedSkus}
+                        />
                     )}
                 </div>
             </div>
