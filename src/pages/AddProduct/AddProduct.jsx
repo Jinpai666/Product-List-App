@@ -8,7 +8,7 @@ function AddProduct() {
 
 
     const [type, setType] = useState("furniture");
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState([]);
     const [isFurniture, setIsFurniture] = useState(true);
     const [pending, setPending] = useState(false);
 
@@ -38,26 +38,34 @@ function AddProduct() {
     }
     const handleSave = (e) => {
         let newItem;
+
         e.preventDefault()
-        isFurniture
-            ? newItem =  {
-                sku: skuRef.current.value,
-                name: nameRef.current.value,
-                price: priceRef.current.value,
-                unique: `${heightRef.current.value}x${widthRef.current.value}x${lengthRef.current.value}`,
-                type: typeRef.current.value,
-            }
-            : newItem =  {
-                sku: skuRef.current.value,
-                name: nameRef.current.value,
-                price: priceRef.current.value,
-                unique: uniqueRef.current.value,
-                type: typeRef.current.value,
-            };
-        // const newList =  newItem;
-        // const newList = [...formData, newItem];
-        setPending(true)
-        sendData(newItem).then(() =>  navigate("/"));
+        const existingSkus = formData.map(item => item.sku)
+        const currentSku = skuRef.current.value
+
+        if(!existingSkus.includes(currentSku)) {
+            isFurniture
+                ? newItem =  {
+                    sku: skuRef.current.value,
+                    name: nameRef.current.value,
+                    price: priceRef.current.value,
+                    unique: `${heightRef.current.value}x${widthRef.current.value}x${lengthRef.current.value}`,
+                    type: typeRef.current.value,
+                }
+                : newItem =  {
+                    sku: skuRef.current.value,
+                    name: nameRef.current.value,
+                    price: priceRef.current.value,
+                    unique: uniqueRef.current.value,
+                    type: typeRef.current.value,
+                };
+
+            setPending(true)
+            sendData(newItem).then(() =>  navigate("/"));
+        }
+        console.log('same sku')
+        return null
+
 
     }
 
