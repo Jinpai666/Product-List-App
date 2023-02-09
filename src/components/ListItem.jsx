@@ -14,7 +14,7 @@ const ListItem = ({item, selectedSkus, setSelectedSkus}) => {
     return (
         <div>
                 <label>
-                    <input onChange={handleChange} type="checkbox" className="delete-checkbox"/>
+                    <input onChange={handleChange} type="checkbox" />
                 </label>
                 <div ref={skuRef}>SKU: {item.sku}</div>
                 <div>Name: {item.name}</div>

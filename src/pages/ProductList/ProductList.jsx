@@ -29,7 +29,7 @@ function ProductList() {
                 <h1>Product List</h1>
                 <div>
                     <Link to="/add-product">ADD</Link>
-                    <button onClick={handleDelete} id="delete-product-btn">MASS DELETE</button>
+                    <button onClick={handleDelete}  className="delete-checkbox">MASS DELETE</button>
                 </div>
                 <div>
                     {formData?.map((item) =>
