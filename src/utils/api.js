@@ -39,7 +39,5 @@ export async function updateData(filteredList) {
 
     } catch (error) {
         console.log(error)
-        return error
-
     }
 }
