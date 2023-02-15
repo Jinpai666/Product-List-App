@@ -112,7 +112,7 @@ function AddProduct() {
                         Height
                         <input
                             id="height"
-                            name="dimensions"
+                            name="height"
                             type="text"
                             ref={heightRef}
                         />
@@ -121,7 +121,7 @@ function AddProduct() {
                         Width
                         <input
                             id="width"
-                            name="dimensions"
+                            name="width"
                             type="text"
                             ref={widthRef}
                         />
@@ -130,7 +130,7 @@ function AddProduct() {
                         Length
                         <input
                             id="length"
-                            name="dimensions"
+                            name="length"
                             type="text"
                             ref={lengthRef}
                         />
