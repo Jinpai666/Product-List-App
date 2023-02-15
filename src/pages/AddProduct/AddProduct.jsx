@@ -167,9 +167,9 @@ function AddProduct() {
                         ref={typeRef}
                         onChange={handleTypeChange}
                     >
-                        <option value="furniture">Furniture</option>
-                        <option value="dvd">DVD</option>
-                        <option value="book">Book</option>
+                        <option >Furniture</option>
+                        <option >DVD</option>
+                        <option >Book</option>
                     </select>
                 </label>
 

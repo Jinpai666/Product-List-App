@@ -12,6 +12,7 @@ function ProductList() {
     const [deleteStatus, setDeleteStatus] = useState(false);
 
     useEffect(() => {
+        console.log('loading')
         setDeleteStatus(false)
         getData(setFormData);
 
