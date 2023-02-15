@@ -73,7 +73,7 @@ function AddProduct() {
         <>
             <form id="product_form">
                 <Link to="/">Cancel</Link>
-                <button onClick={handleSave}>{pending ? 'Saving' : 'Save'}</button>
+                <button onClick={handleSave}>{ 'Save'}</button>
 
                 <label>
                     SKU
