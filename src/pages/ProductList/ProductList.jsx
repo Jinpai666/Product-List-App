@@ -2,25 +2,29 @@ import React, { useEffect, useState } from 'react';
 import './ProductList.scss'
 import { Link } from "react-router-dom";
 import ListItem from "../../components/ListItem.jsx";
-import { getData, updateData } from "../../utils/api.js";
+import { getData, deleteData } from "../../utils/api.js";
 
 
 function ProductList() {
 
     const [formData, setFormData] = useState([]);
-    const [selectedSkus, setSelectedSkus] = useState([])
+    const [selectedSkus, setSelectedSkus] = useState([]);
+    const [deleteStatus, setDeleteStatus] = useState(false);
 
     useEffect(() => {
+        setDeleteStatus(false)
         getData(setFormData);
-    }, [])
+
+    }, [deleteStatus])
 
     const handleDelete = () => {
-        const newData = formData.filter(item => !selectedSkus.includes(item.sku))
-        updateData(newData).then((error) => {
-            error
-                ? null
-                : setFormData(newData)
-        })
+        const itemsToDelete = formData.filter(item => selectedSkus.includes(item.sku))
+        const newFormData = formData.filter(item => !selectedSkus.includes(item.sku))
+        itemsToDelete.forEach(
+            // item => deleteData(item.id).then(()=>setFormData(newFormData))
+            item => deleteData(item.id, setDeleteStatus)
+        );
+
     }
 
     return (

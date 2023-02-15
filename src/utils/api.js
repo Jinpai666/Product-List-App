@@ -5,7 +5,13 @@ export async function getData(setItems) {
         await axios.get(
             'https://product-list-b59c8-default-rtdb.europe-west1.firebasedatabase.app/list.json'
         ).then(response => {
+            if (!response.data) {
+                console.log('no products')
+                return;
+            }
+            console.log('obj',Object)
             const data = Object.keys(response.data).map(itemId => ({
+                id: itemId,
                 sku: response.data[itemId].sku,
                 name: response.data[itemId].name,
                 price: response.data[itemId].price,
@@ -30,13 +36,25 @@ export async function sendData(list) {
         console.log(error)
     }
 }
+//
+// export async function updateData(filteredList) {
+//     try {
+//         await axios.put(
+//             `https://product-list-b59c8-default-rtdb.europe-west1.firebasedatabase.app/list.json`, filteredList
+//         );
+//
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
 
-export async function updateData(filteredList) {
+export async function deleteData(item, setReload){
+    console.log(item)
     try {
-        await axios.put(
-            `https://product-list-b59c8-default-rtdb.europe-west1.firebasedatabase.app/list.json`, filteredList
+        await axios.delete(
+            `https://product-list-b59c8-default-rtdb.europe-west1.firebasedatabase.app/list/${item}.json`,
         );
-
+       await setReload(true)
     } catch (error) {
         console.log(error)
     }
