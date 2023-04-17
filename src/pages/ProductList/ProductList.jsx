@@ -9,46 +9,47 @@ function ProductList() {
 
     const [formData, setFormData] = useState([]);
     const [selectedSkus, setSelectedSkus] = useState([]);
-    const [deleteStatus, setDeleteStatus] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         console.log('loading')
-        setDeleteStatus(false)
-        getData(setFormData);
+        getData(setFormData).then(() => setIsLoading(false));
 
-    }, [deleteStatus])
+    }, [isLoading])
 
     const handleDelete = () => {
+        setIsLoading(true)
         const itemsToDelete = formData.filter(item => selectedSkus.includes(item.sku))
         itemsToDelete.forEach(
-            item => deleteData(item.id, setDeleteStatus)
+            item => deleteData(item.id, setIsLoading)
         );
-        setDeleteStatus(false)
     }
 
     return (
         <>
             <div>
+                <h2>test : {isLoading ? 'loading' : 'loaded'}</h2>
                 <h1>Product List</h1>
                 <div>
                     <Link to="/add-product">ADD</Link>
                     <button onClick={handleDelete}  className="delete-checkbox">MASS DELETE</button>
                 </div>
-                <div>
-                    {formData?.map((item) =>
-                        <ListItem
-                            key={item.sku}
-                            item={item}
-                            selectedSkus={selectedSkus}
-                            setSelectedSkus={setSelectedSkus}
-                        />
-                    )}
-                </div>
+                {formData.length > 0 ? (
+                    <div>
+                        {formData?.map((item) =>
+                            <ListItem
+                                key={item.sku}
+                                item={item}
+                                selectedSkus={selectedSkus}
+                                setSelectedSkus={setSelectedSkus}
+                            />
+                        )}
+                    </div>
+                ) : (
+                    <p>No products to display.</p>
+                )}
             </div>
-
         </>
-
-
     );
 }
 

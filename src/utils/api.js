@@ -1,32 +1,28 @@
 import axios from "axios";
 
-export async function getData(setItems) {
+export const getData = async (setItems) => {
     try {
-        await axios.get(
+        const { data } = await axios.get(
             'https://product-list-b59c8-default-rtdb.europe-west1.firebasedatabase.app/list.json'
-        ).then(response => {
-            if (!response.data) {
-                console.log('no products')
-                return;
-            }
-            console.log('obj',Object)
-            const data = Object.keys(response.data).map(itemId => ({
-                id: itemId,
-                sku: response.data[itemId].sku,
-                name: response.data[itemId].name,
-                price: response.data[itemId].price,
-                type: response.data[itemId].type,
-                unique: response.data[itemId].unique,
-            }))
-            setItems(data)
-        })
+        );
+        if (!data) {
+            console.log('no products');
+            setItems([]);
+            return;
+        }
+        const items = Object.keys(data).map((itemId) => ({
+            id: itemId,
+            ...data[itemId],
+        }));
+        setItems(items);
     } catch (error) {
-        setItems([])
-        console.log(error)
+        setItems([]);
+        console.log(error);
     }
 }
 
-export async function sendData(list) {
+
+export const sendData = async (list) => {
     try {
         await axios.post(
             'https://product-list-b59c8-default-rtdb.europe-west1.firebasedatabase.app/list.json',
@@ -37,14 +33,13 @@ export async function sendData(list) {
     }
 }
 
-export async function deleteData(item, setReload){
-    console.log(item)
+export const deleteData = async (item, setReload) => {
     try {
         await axios.delete(
-            `https://product-list-b59c8-default-rtdb.europe-west1.firebasedatabase.app/list/${item}.json`,
+            `https://product-list-b59c8-default-rtdb.europe-west1.firebasedatabase.app/list/${item}.json`
         );
-       await setReload(true)
+        setReload(false);
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 }
