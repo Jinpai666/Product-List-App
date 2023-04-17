@@ -36,17 +36,6 @@ export async function sendData(list) {
         console.log(error)
     }
 }
-//
-// export async function updateData(filteredList) {
-//     try {
-//         await axios.put(
-//             `https://product-list-b59c8-default-rtdb.europe-west1.firebasedatabase.app/list.json`, filteredList
-//         );
-//
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
 
 export async function deleteData(item, setReload){
     console.log(item)

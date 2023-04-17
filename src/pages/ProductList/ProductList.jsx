@@ -20,9 +20,7 @@ function ProductList() {
 
     const handleDelete = () => {
         const itemsToDelete = formData.filter(item => selectedSkus.includes(item.sku))
-        const newFormData = formData.filter(item => !selectedSkus.includes(item.sku))
         itemsToDelete.forEach(
-            // item => deleteData(item.id).then(()=>setFormData(newFormData))
             item => deleteData(item.id, setDeleteStatus)
         );
 
