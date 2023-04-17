@@ -23,7 +23,7 @@ function ProductList() {
         itemsToDelete.forEach(
             item => deleteData(item.id, setDeleteStatus)
         );
-
+        setDeleteStatus(false)
     }
 
     return (
