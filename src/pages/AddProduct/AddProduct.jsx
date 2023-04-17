@@ -1,163 +1,110 @@
 import React, {useEffect, useRef, useState} from "react";
-import "./AddProduct.scss"
+import "./AddProduct.scss";
 import {Link, useNavigate} from "react-router-dom";
 import {getData, sendData} from "../../utils/api.js";
 
-
 function AddProduct() {
-
-
     const [type, setType] = useState("furniture");
-    const [formData, setFormData] = useState([]);
+    const [items, setItems] = useState([]);
     const [isFurniture, setIsFurniture] = useState(true);
     const [pending, setPending] = useState(false);
+    const [error, setError] = useState(null);
 
-    const skuRef = useRef("");
-    const nameRef = useRef("");
-    const priceRef = useRef("");
-    const typeRef = useRef("");
-    const uniqueRef = useRef("");
-    const heightRef = useRef("");
-    const widthRef = useRef("");
-    const lengthRef = useRef("");
-
+    const skuRef = useRef(null);
+    const nameRef = useRef(null);
+    const priceRef = useRef(null);
+    const typeRef = useRef(null);
+    const uniqueRef = useRef(null);
+    const heightRef = useRef(null);
+    const widthRef = useRef(null);
+    const lengthRef = useRef(null);
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        getData(setFormData);
-    }, [])
-
+        getData()
+            .then((data) => {
+                setItems(data);
+                setPending(false);
+            })
+            .catch(() => {
+                setError("Failed to load products. Please try again later.");
+                setPending(false);
+            });
+    }, []);
 
     const handleTypeChange = (e) => {
-        const target = e.target.value
-        setType(target);
-        target === 'furniture'
-            ? setIsFurniture(true)
-            : setIsFurniture(false)
-    }
+        setType(e.target.value);
+        setIsFurniture(e.target.value === "furniture");
+    };
+
     const handleSave = (e) => {
-        let newItem;
+        e.preventDefault();
 
-        e.preventDefault()
-        const existingSkus = formData.map(item => item.sku)
-        const currentSku = skuRef.current.value
+        const existingSkus = items.map((item) => item.sku);
+        const currentSku = skuRef.current.value;
 
-        if(!existingSkus.includes(currentSku)) {
-            isFurniture
-                ? newItem =  {
-                    sku: skuRef.current.value,
-                    name: nameRef.current.value,
-                    price: priceRef.current.value,
-                    unique: `${heightRef.current.value}x${widthRef.current.value}x${lengthRef.current.value}`,
-                    type: typeRef.current.value,
-                }
-                : newItem =  {
-                    sku: skuRef.current.value,
-                    name: nameRef.current.value,
-                    price: priceRef.current.value,
-                    unique: uniqueRef.current.value,
-                    type: typeRef.current.value,
-                };
+        if (!existingSkus.includes(currentSku)) {
+            const newItem = {
+                sku: currentSku,
+                name: nameRef.current.value,
+                price: priceRef.current.value,
+                unique: isFurniture
+                    ? `${heightRef.current.value}x${widthRef.current.value}x${lengthRef.current.value}`
+                    : uniqueRef.current.value,
+                type: typeRef.current.value,
+            };
 
-            setPending(true)
-            sendData(newItem).then(() =>  navigate("/"));
+            setPending(true);
+            sendData(newItem).then(() => navigate("/"));
         }
-        console.log('same sku')
-        return null
-
-
-    }
+    };
 
     return (
         <>
             <form id="product_form">
                 <Link to="/">Cancel</Link>
-                <button onClick={handleSave}>{pending ? 'Saving' : 'Save'}</button>
+                <button onClick={handleSave}>{pending ? "Saving" : "Save"}</button>
 
                 <label>
                     SKU
-                    <input
-                        id="sku"
-                        name="SKU"
-                        type="text"
-                        maxLength={8}
-                        ref={skuRef}
-                    />
+                    <input id="sku" name="SKU" type="text" maxLength={8} ref={skuRef}/>
                 </label>
 
                 <label>
                     Name
-                    <input
-                        id="name"
-                        name="name"
-                        type="text"
-                        ref={nameRef}
-                    />
+                    <input id="name" name="name" type="text" ref={nameRef}/>
                 </label>
 
                 <label>
                     Price
-                    <input
-                        id="price"
-                        name="price"
-                        type="text"
-                        ref={priceRef}
-                    />
+                    <input id="price" name="price" type="text" ref={priceRef}/>
                 </label>
 
-                {type === "furniture" && <div>
-                    Dimensions
+                {isFurniture && (
+                    <div>
+                        Dimensions
+                        <label>
+                            Height
+                            <input id="height" name="height" type="text" ref={heightRef}/>
+                        </label>
+                        <label>
+                            Width
+                            <input id="width" name="width" type="text" ref={widthRef}/>
+                        </label>
+                        <label>
+                            Length
+                            <input id="length" name="length" type="text" ref={lengthRef}/>
+                        </label>
+                    </div>
+                )}
+
+                {!isFurniture && (
                     <label>
-                        Height
-                        <input
-                            id="height"
-                            name="height"
-                            type="text"
-                            ref={heightRef}
-                        />
+                        {type === "book" ? "Weight" : "Size"}
+                        <input id="unique" name="unique" type="text" ref={uniqueRef}/>
                     </label>
-                    <label>
-                        Width
-                        <input
-                            id="width"
-                            name="width"
-                            type="text"
-                            ref={widthRef}
-                        />
-                    </label>
-                    <label>
-                        Length
-                        <input
-                            id="length"
-                            name="length"
-                            type="text"
-                            ref={lengthRef}
-                        />
-                    </label>
-
-                </div>}
-
-                {type === "book" && <label>
-                    Weight
-                    <input
-                        id="weight"
-                        name="weight"
-                        type="text"
-                        ref={uniqueRef}
-                    />
-                </label>}
-
-                {type === "dvd" && <label>
-                    Size
-                    <input
-                        id="size"
-                        name="size"
-                        type="text"
-                        ref={uniqueRef}
-
-                    />
-                </label>}
+                )}
 
                 <label>
                     Type Switcher
@@ -165,6 +112,7 @@ function AddProduct() {
                         id="productType"
                         name="type"
                         ref={typeRef}
+                        value={type}
                         onChange={handleTypeChange}
                     >
                         <option value="furniture">Furniture</option>

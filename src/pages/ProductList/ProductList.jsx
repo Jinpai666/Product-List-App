@@ -16,7 +16,7 @@ function ProductList() {
                 setItems(data);
                 setIsLoading(false);
             })
-            .catch((error) => {
+            .catch(() => {
                 setError("Failed to load products. Please try again later.");
                 setIsLoading(false);
             });
@@ -28,7 +28,6 @@ function ProductList() {
             selectedSkus.includes(item.sku)
         );
         try {
-
             await Promise.all(
                 itemsToDelete.map((item) => deleteData(item.id))
             );
@@ -37,7 +36,6 @@ function ProductList() {
             );
             setSelectedSkus([]);
             setError("");
-
         } catch (error) {
             setError("Failed to delete products. Please try again later.");
         }
@@ -56,9 +54,9 @@ function ProductList() {
                     </button>
                 </div>
                 {error && (
-                <p style={{color:'red'}}>{error}</p>
-                ) }
-                { items.length > 0 ? (
+                    <p style={{ color: "red" }}>{error}</p>
+                )}
+                {items.length > 0 ? (
                     <div>
                         {items.map((item) => (
                             <ListItem
@@ -76,4 +74,5 @@ function ProductList() {
         </>
     );
 }
-export default ProductList
+
+export default ProductList;
